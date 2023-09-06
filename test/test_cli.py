@@ -45,8 +45,10 @@ def test_generate_toml(num_entries, tmp_path):
 
     # Ground Truth
     markdown_from_generated_quick_note_table = to_markdown.parse(
-        quick_note_table)
+        quick_note_table
+    )
 
     # Comparison
     assert to_toml.parse(markdown_string) == to_toml.parse(
-        markdown_from_generated_quick_note_table)
+        markdown_from_generated_quick_note_table
+    )

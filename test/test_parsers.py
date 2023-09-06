@@ -26,13 +26,15 @@ def test_valid_quick_note_table(n_entries, tmp_path):
         conf.MockQuickNoteFactory.next() for _ in range(n_entries)
     ]
     expected_quick_note_markdown = "\n".join(
-        [x.markdown_string() for x in list_of_mock_quick_note])
+        [x.markdown_string() for x in list_of_mock_quick_note]
+    )
     expected_quick_note_markdown += (
         "\n"  # This accounts for the newline added by the template render
     )
 
     quick_note_table = model.QuickNoteTable(
-        [x.quick_note for x in list_of_mock_quick_note])
+        [x.quick_note for x in list_of_mock_quick_note]
+    )
     quick_note_markdown = to_markdown.parse(quick_note_table)
 
     assert quick_note_markdown == expected_quick_note_markdown

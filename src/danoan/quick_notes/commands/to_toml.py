@@ -77,7 +77,10 @@ def parse(markdown_str: str) -> model.QuickNoteTable:
     """
 
     quick_notes_parser = Lark(
-        quick_notes_grammar, start="document", parser="lalr", transformer=_MarkdownQuickNoteToToml()
+        quick_notes_grammar,
+        start="document",
+        parser="lalr",
+        transformer=_MarkdownQuickNoteToToml(),
     )
 
     parsed_element = quick_notes_parser.parse(markdown_str)

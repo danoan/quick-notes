@@ -41,14 +41,20 @@ class MockQuickNoteFactory:
         the cultivation of potatoes in the south of Germany. I
         want to try the dish basterwalthoim that he suggested me."""
         )
-        return MockQuickNote(model.QuickNote(MockQuickNoteFactory.id, date, title, text))
+        return MockQuickNote(
+            model.QuickNote(MockQuickNoteFactory.id, date, title, text)
+        )
 
 
 def generate_mock_quick_note_markdown(num_entries: int) -> str:
-    list_of_quick_note = [MockQuickNoteFactory.next() for _ in range(num_entries)]
+    list_of_quick_note = [
+        MockQuickNoteFactory.next() for _ in range(num_entries)
+    ]
     return "\n".join([x.markdown_string() for x in list_of_quick_note])
 
 
 def generate_mock_quick_note_table(num_entries: int) -> model.QuickNoteTable:
-    list_of_quick_note = [MockQuickNoteFactory.next() for _ in range(num_entries)]
+    list_of_quick_note = [
+        MockQuickNoteFactory.next() for _ in range(num_entries)
+    ]
     return model.QuickNoteTable(list_of_quick_note)
