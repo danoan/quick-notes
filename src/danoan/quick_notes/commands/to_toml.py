@@ -80,4 +80,8 @@ def parse(markdown_str: str) -> model.QuickNoteTable:
         quick_notes_grammar, start="document", parser="lalr", transformer=_MarkdownQuickNoteToToml()
     )
 
-    return quick_notes_parser.parse(markdown_str)
+    parsed_element = quick_notes_parser.parse(markdown_str)
+    if isinstance(parsed_element, model.QuickNoteTable):
+        return parsed_element
+
+    raise RuntimeError("Unexpected parsed data type.")
