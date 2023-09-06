@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "quick-notes"
 version = "0.0.1"
-description = ""
+description = "Markdown dialect with support to metadata and toml serialization"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE.txt" }
@@ -17,12 +17,10 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["dataclasses", "jinja2", "typing_extensions", "importlib_resources", "lark", "toml_dataclass @ http://pypi-server.barriguinhas.fr/packages/toml_dataclass-0.0.1-py3-none-any.whl#md5=5defde6edc1a5f005d293bd187c5eae3"] 
+dependencies = ["dataclasses", "jinja2", "typing_extensions", "importlib_resources", "lark", "toml_dataclass @ http://pypi-server.barriguinhas.fr/packages/toml_dataclass-0.1.0-py3-none-any.whl#md5=002285ded5b7e2b5ad1301015f874c70"] 
 
 [project.urls]
 Documentation = "https://github.com/danoan/quick-notes#readme"
@@ -53,7 +51,7 @@ minversion = "6.0"
 addopts = "--cov --strict-markers" 
 xfail_strict = true
 testpaths = [
-    "tests"
+    "test"
 ]
 pythonpath = [
 "test" # Needed in order to import conftest.py in test modules
@@ -76,7 +74,6 @@ source = [
 [tool.coverage.paths]
 source = [
   "src/danoan/quick_notes",
-  "*/site-packages/danoan/quick_notes"
 ]
 
 [tool.coverage.report]
@@ -89,7 +86,7 @@ omit = [
 
 # -------------------- code formatting --------------------
 [tool.black]
-line-length = 100
+line-length = 79
 
 
 # -------------------- type checking --------------------
@@ -101,6 +98,7 @@ pretty = true
 namespace_packages = true
 check_untyped_defs = true
 ignore_missing_imports = true # libraries without py.typed marker raises an error if this is set to false
-mypy_path = "test" # Such that conftest is imported correctly in test files without errors
+mypy_path = "src:test" # Such that conftest is imported correctly in test files without errors
+explicit_package_bases = true # To solve import conflicts of mypy
 
 
