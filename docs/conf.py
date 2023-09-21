@@ -7,24 +7,24 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 # Add the package source to the sys.path
+import sphinx_rtd_theme
+from importlib import metadata
 import pathlib
 import sys
 
-source_folder = pathlib.Path(__file__).parents[1].joinpath("src/danoan").resolve().as_posix()
+source_folder = pathlib.Path(__file__).parents[1].joinpath(
+    "src/danoan").resolve().as_posix()
 sys.path.insert(0, source_folder)
 
 # Tell sphinx the package version
-from importlib import metadata
 
 PACKAGE_VERSION = metadata.version("quick-notes")
 version = release = PACKAGE_VERSION
 
 # Import read the docs theme
-import sphinx_rtd_theme
-
 
 project = "quick-notes"
-copyright = "2022, Daniel Martins Antunes"
+copyright = "2023 Daniel Martins Antunes"
 author = "Daniel Martins Antunes"
 
 # -- General configuration ---------------------------------------------------
@@ -36,10 +36,15 @@ extensions = [
     "sphinx.ext.napoleon",  # NumPy and Google docstring format
     "sphinx.ext.viewcode",  # Source code link at function, class, module documentation
     "sphinx_rtd_theme",  # Read the docs theme
+    "myst_parser"
 ]
 
-autodoc_typehints = "both"
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
 
+autodoc_typehints = "both"
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
