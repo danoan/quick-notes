@@ -28,7 +28,7 @@ Issues = "https://github.com/danoan/quick-notes/issues"
 Source = "https://github.com/danoan/quick-notes"
 
 [project.scripts]
-quick-notes = "danoan.quick_notes.cli:main"
+quick-notes = "danoan.quick_notes.cli.cli:main"
 
 
 # -------------------- build backend --------------------

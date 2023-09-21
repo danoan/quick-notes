@@ -1,5 +1,7 @@
-from danoan.quick_notes.commands import to_markdown, to_toml
-from danoan.quick_notes.control import model
+from danoan.quick_notes.api import to_markdown, to_toml
+from danoan.quick_notes.api.model import QuickNoteList
+
+from danoan.quick_notes.cli.model import QuickNote
 
 import argparse
 from datetime import datetime
@@ -18,10 +20,10 @@ def generate_markdown_from_stream(toml_stream: TextIO) -> str:
     Returns:
         String representing a markdown quick-note.
     """
-    return to_markdown.parse(model.QuickNoteTable.read_stream(toml_stream))
+    return to_markdown.parse(QuickNote.read_list(toml_stream))
 
 
-def generate_toml_from_stream(markdown_stream: TextIO) -> model.QuickNoteTable:
+def generate_toml_from_stream(markdown_stream: TextIO) -> QuickNoteList:
     """
     Generate toml quick-note from markdown data.
 
@@ -31,7 +33,8 @@ def generate_toml_from_stream(markdown_stream: TextIO) -> model.QuickNoteTable:
     Returns:
         String representing a toml quick-note.
     """
-    return to_toml.parse(markdown_stream.read())
+    not_rendered_quick_note = to_toml.parse(markdown_stream.read())
+    return not_rendered_quick_note.render(QuickNote)
 
 
 def generate_markdown_from_filepath(toml_filepath: str) -> str:
@@ -48,7 +51,7 @@ def generate_markdown_from_filepath(toml_filepath: str) -> str:
         return generate_markdown_from_stream(stream)
 
 
-def generate_toml_from_filepath(markdown_filepath: str) -> model.QuickNoteTable:
+def generate_toml_from_filepath(markdown_filepath: str) -> QuickNoteList:
     """
     Generate toml quick-note from a markdown quick-note file.
 
@@ -73,11 +76,14 @@ def validate_files(toml_filepath: str, markdown_filepath: str) -> bool:
     Returns:
         True if the files are consistent; and False otherwise.
     """
-    with open(markdown_filepath, "r") as md:
-        markdown_string = md.read()
-        if model.QuickNoteTable.read(toml_filepath) == to_toml.parse(
+    with open(markdown_filepath, "r") as f_md, open(toml_filepath) as f_toml:
+        markdown_string = f_md.read()
+
+        to_toml.parse(markdown_string)
+
+        if QuickNote.read_list(f_toml) == to_toml.parse(
             markdown_string
-        ):
+        ).render(QuickNote):
             return True
 
         return False
@@ -97,9 +103,9 @@ def generate_quick_note(id: int, date: str, title: str, text: str) -> str:
         Toml quick-note filled up with the given parameters.
     """
     s = io.StringIO()
-    model.QuickNoteTable([model.QuickNote(id, date, title, text)]).write_stream(
-        s
-    )
+    QuickNoteList.create(
+        [QuickNote(id=id, date=date, title=title, text=text)]
+    ).write(s)
     return s.getvalue()
 
 
@@ -151,9 +157,9 @@ def _generate_toml(markdown_filepath: str, **kwargs):
         markdown_filepath: Path to the markdown file
     """
     if isinstance(markdown_filepath, type(sys.stdin)):
-        generate_toml_from_stream(markdown_filepath).write_stream(sys.stdout)
+        generate_toml_from_stream(markdown_filepath).write(sys.stdout)
     else:
-        generate_toml_from_filepath(markdown_filepath).write_stream(sys.stdout)
+        generate_toml_from_filepath(markdown_filepath).write(sys.stdout)
 
 
 def _validate_files(
@@ -182,12 +188,12 @@ def _validate_files(
     else:
         if overwrite_toml:
             with open(markdown_filepath, "r") as fm:
-                to_toml.parse(fm.read()).write(toml_filepath)
+                to_toml.parse(fm.read()).render(QuickNote).write(toml_filepath)
         elif overwrite_markdown:
-            with open(markdown_filepath, "w") as fm:
-                fm.write(
-                    to_markdown.parse(model.QuickNoteTable.read(toml_filepath))
-                )
+            with open(markdown_filepath, "w") as fm, open(
+                toml_filepath
+            ) as f_toml:
+                fm.write(to_markdown.parse(QuickNote.read_list(f_toml)))
         else:
             print("Invalid")
 
@@ -217,11 +223,12 @@ def _generate_quick_note(
     sys.stdout.write(s)
 
 
-def main():
+def create_parser():
     parser = argparse.ArgumentParser(
         "quick-notes",
         description="Create quick-notes in markdown and toml format.",
     )
+
     subparsers = parser.add_subparsers()
 
     toml_parser = subparsers.add_parser(
@@ -270,6 +277,11 @@ def main():
     generate_quick_note_parser.add_argument("--title")
     generate_quick_note_parser.set_defaults(func=_generate_quick_note)
 
+    return parser
+
+
+def main():
+    parser = create_parser()
     args = parser.parse_args()
     if "func" in args:
         args.func(**vars(args))

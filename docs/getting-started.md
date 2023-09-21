@@ -71,7 +71,7 @@ class QuickNote(TomlDataClassIO):
 
 
 @dataclass
-class QuickNoteTable(TomlTableDataClassIO):
+class QuickNoteList(TomlTableDataClassIO):
     list_of_quick_note: List[QuickNote]
 
 ```

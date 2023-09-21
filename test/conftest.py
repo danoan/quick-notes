@@ -1,4 +1,4 @@
-from danoan.quick_notes.control import model
+from danoan.quick_notes.api import model
 
 from dataclasses import dataclass
 import datetime
@@ -7,24 +7,23 @@ from typing import Any, Dict
 
 
 @dataclass
-class MockQuickNote:
-    quick_note: model.QuickNote
+class MockQuickNote(model.QuickNoteBase):
+    id: int
+    date: str
+    title: str
 
     def markdown_string(self) -> str:
         temp = dedent(
             f"""\
-            <!--BEGIN id={self.quick_note.id} date="{self.quick_note.date}" -->
-            # {self.quick_note.title}
+            <!--BEGIN id={self.id} date="{self.date}" -->
+            # {self.title}
             {{}}
             <!--END-->
             """
         )
         # This avoids errors in indentation that dedent is not able to capture when
         # doing the varible substitution direclty in the statement above
-        return temp.format(self.quick_note.text)
-
-    def _as_dict(self) -> Dict[str, Any]:
-        return self.quick_note._as_dict()
+        return temp.format(self.text)
 
 
 class MockQuickNoteFactory:
@@ -42,7 +41,7 @@ class MockQuickNoteFactory:
         want to try the dish basterwalthoim that he suggested me."""
         )
         return MockQuickNote(
-            model.QuickNote(MockQuickNoteFactory.id, date, title, text)
+            id=MockQuickNoteFactory.id, date=date, title=title, text=text
         )
 
 
@@ -53,8 +52,10 @@ def generate_mock_quick_note_markdown(num_entries: int) -> str:
     return "\n".join([x.markdown_string() for x in list_of_quick_note])
 
 
-def generate_mock_quick_note_table(num_entries: int) -> model.QuickNoteTable:
+def generate_mock_quick_note_list(
+    num_entries: int,
+) -> model.QuickNoteList:
     list_of_quick_note = [
         MockQuickNoteFactory.next() for _ in range(num_entries)
     ]
-    return model.QuickNoteTable(list_of_quick_note)
+    return model.QuickNoteList.create(list_of_quick_note)
