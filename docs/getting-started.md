@@ -1,6 +1,7 @@
 # Getting started with quick-notes
 
-Markdown dialect with metadata support and toml serialization.
+Markdown dialect with support to metadata and toml serialization. [Read the
+docs](https://danoan.github.io/quick-notes).
 
 ## Features
 
@@ -8,13 +9,20 @@ Markdown dialect with metadata support and toml serialization.
 - Markdown <--> toml.
 - CLI to generate and validate .md and .toml quick-notes.
 
-## What is a quick note?
+## What is a quick-note?
 
-A quick note is a labeled text that can be represented in markdown or toml format.
+A quick-note is a markdown document labeled with a set of metadata and that can
+be exported to toml format.
 
-### Markdown quick note 
+## Why quick-note 
 
-A markdown quick note is a markdown text wrapper with special
+- Programmatically update of markdown documents.
+- General purpose toml format.
+
+
+### Markdown quick-note 
+
+A markdown quick-note is a markdown text wrapped within special
 markdown comments starting with `<!--BEGIN-->` and ending with
 `<!--END-->`. 
 
@@ -32,11 +40,20 @@ I should remember to buy:
 <!--END-->
 ```
 
-The `<!--BEGIN-->` statement accepts any list of key-value attributes that could be represented as a string or as an integer.
+A markdown quick-note text always starts with a title. The `<!--BEGIN-->`
+statement accepts any list of key-value attributes that could be represented as
+a string or as an integer.
 
-### Toml quick note
+Any quick-note in the markdown document can be easily update or removed thanks
+to the markdown quick-note parser.
 
-Quick notes in a markdown file can be converted to its toml representation. The `ingredients.md` above would have the corresponding `ingredients.toml`:
+### Toml quick-note
+
+A markdown quick-note can be converted to the general purpose toml format. Therefore,
+the markdown quick-notes data can be used in a different markup/render mechanism of 
+choice. 
+
+The `ingredients.md` above would have the corresponding `ingredients.toml`:
 
 ```toml
 [[list_of_quick_note]]
@@ -63,17 +80,17 @@ A data layout is a python dataclass with support to write and read toml files. T
 
 ```python   
 @dataclass
-class QuickNote(TomlDataClassIO):
+class QuickNote(QuickNoteBase):
     id: int
     date: str
-    title: str
-    text: str
+```
 
+One can extend the `QuickNote` class or create its own. The attributes specified in the data-layout will be automatically
+rendered in both markdown and toml representations of the quick-note.
 
-@dataclass
-class QuickNoteList(TomlTableDataClassIO):
-    list_of_quick_note: List[QuickNote]
-
+```{caution} 
+Instantiate derived classes of QuickNoteBase using keyword arguments only. Otherwise, the attributes
+could be assigned values different from those expected.
 ```
 
 ## API module   

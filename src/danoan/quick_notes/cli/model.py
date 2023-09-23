@@ -6,4 +6,3 @@ from dataclasses import dataclass
 class QuickNote(QuickNoteBase):
     id: int
     date: str
-    title: str

@@ -1,3 +1,10 @@
+"""
+QuickNote base classes.
+
+- NotRenderedQuickNoteList: Type returned by the markdown parser.
+- QuickNoteBase: Type from which every QuickNote is derived from.
+- QuickNoteList: List of QuickNoteBase.
+"""
 from danoan.toml_dataclass import TomlDataClassIO, TomlTableDataClassIO
 
 from dataclasses import dataclass, make_dataclass
@@ -8,7 +15,7 @@ import toml
 @dataclass
 class NotRenderedQuickNoteList:
     """
-    Default class returned by the parser.
+    Default class returned by the markdown parser.
 
     This class holds the raw data types parsed by the grammar.
     One needs to render as an instance of QuickNoteList using
@@ -31,13 +38,7 @@ class QuickNoteBase(TomlDataClassIO):
     title and text. No metadata is stored here.
 
     One should derive from this class to create custom
-    quick-notes. For example:
-
-    @dataclass
-    class MyQuickNote(QuickNoteBase):
-        id: int
-        date: str
-        other_metadata: str
+    quick-notes.
     """
 
     title: str
@@ -51,12 +52,13 @@ class QuickNoteBase(TomlDataClassIO):
     @classmethod
     def read_list(cls, stream_in: TextIO) -> "QuickNoteList":
         """
-        Read a toml serialized quick-note list.
+        Read a toml serialized QuickNoteList.
         """
         data_dict = toml.load(stream_in)
         if "list_of_quick_note" not in data_dict:
             raise RuntimeError(
-                "Invalid quick-note list. The toml file does not contain a list-of-quick-note table.")
+                "Invalid quick-note list. The toml file does not contain a list_of_quick_note table."
+            )
 
         list_of_quick_note = [
             cls(**e) for e in data_dict["list_of_quick_note"]

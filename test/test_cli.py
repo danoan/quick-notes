@@ -74,7 +74,7 @@ def test_validate_files(num_entries, tmp_path):
     assert cli.validate_files(toml_filepath, markdown_filepath)
 
     # Slight modification and Comparison
-    markdown_string = conf.generate_mock_quick_note_markdown(num_entries+1)
+    markdown_string = conf.generate_mock_quick_note_markdown(num_entries + 1)
     with open(markdown_filepath, "w") as f:
         f.write(markdown_string)
 

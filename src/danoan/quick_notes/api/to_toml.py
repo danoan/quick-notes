@@ -1,3 +1,7 @@
+"""
+Parse markdown string to NotRenderedQuickNoteList.
+"""
+
 from danoan.quick_notes.api import model
 
 from lark import Lark, Transformer

@@ -20,7 +20,9 @@ How-to guides
 .. toctree::
    :maxdepth: 1
 
-   how-to/to-be-done
+   how-to/how-to-create-markdown-quick-notes
+   how-to/exporting-quick-notes-to-toml
+   how-to/using-the-quick-notes-cli
 
 Reference guides
 ================
@@ -28,7 +30,7 @@ Reference guides
 .. toctree::
    :maxdepth: 2
    
-   reference/quick_notes
+   api
 
 Explanation
 ===========
