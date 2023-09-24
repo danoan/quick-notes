@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to create and update markdown quick-notes &mdash; quick-notes 1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=359c27e9"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Exporting quick-notes to toml" href="exporting-quick-notes-to-toml.html" />
+    <link rel="prev" title="Getting started with quick-notes" href="../getting-started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            quick-notes
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started.html">Getting started with quick-notes</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to create and update markdown quick-notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-markdown-quick-note">Creating a markdown quick-note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-a-markdown-quick-note">Updating a markdown quick-note</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="exporting-quick-notes-to-toml.html">Exporting quick-notes to toml</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-the-quick-notes-cli.html">Quick-notes CLI</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">quick-notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How to create and update markdown quick-notes</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/how-to/how-to-create-markdown-quick-notes.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-create-and-update-markdown-quick-notes">
+<h1>How to create and update markdown quick-notes<a class="headerlink" href="#how-to-create-and-update-markdown-quick-notes" title="Permalink to this heading"></a></h1>
+<p>In this tutorial we are going to create a markdown quick-note programmatically
+and then generate the markdown document.</p>
+<section id="creating-a-markdown-quick-note">
+<h2>Creating a markdown quick-note<a class="headerlink" href="#creating-a-markdown-quick-note" title="Permalink to this heading"></a></h2>
+<p>We are going to create the class <code class="docutils literal notranslate"><span class="pre">BlogPostSketch</span></code>, a derived class of
+<code class="docutils literal notranslate"><span class="pre">QuickNoteBase</span></code>. This quick-note will hold ideas for blog posts.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Import quick-notes base classes and parsers</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">danoan.quick_notes.api.model</span> <span class="kn">import</span> <span class="n">QuickNoteBase</span><span class="p">,</span> <span class="n">QuickNoteList</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">danoan.quick_notes.api</span> <span class="kn">import</span> <span class="n">to_markdown</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Import the dataclass decorator as every quick-note class should be decorated with</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="go"> </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nd">@dataclass</span>
+<span class="gp">... </span><span class="k">class</span> <span class="nc">BlogPostSketch</span><span class="p">(</span><span class="n">QuickNoteBase</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">author</span><span class="p">:</span> <span class="nb">str</span>
+<span class="gp">... </span>    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> 
+<span class="gp">... </span>    <span class="n">date</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use keyword arguments to avoid assigning values to the wrong attributes.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Every quick-note must have a `title` and a `text` attribute.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quick_note</span> <span class="o">=</span> <span class="n">BlogPostSketch</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Using generative AI to sharpe creativity&quot;</span><span class="p">,</span> 
+<span class="gp">... </span>                            <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Jack Kerouac&quot;</span><span class="p">,</span> 
+<span class="gp">... </span>                            <span class="n">category</span><span class="o">=</span><span class="s2">&quot;writing&quot;</span><span class="p">,</span> 
+<span class="gp">... </span>                            <span class="n">date</span><span class="o">=</span><span class="s2">&quot;2023-09-21&quot;</span><span class="p">,</span> 
+<span class="gp">... </span>                            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s2">Man, you know, the world&#39;s changing faster than a jazz riff on a summer night.</span>
+<span class="gp">... </span><span class="s2">We got these machines now, man, machines that can create like the gods</span>
+<span class="gp">... </span><span class="s2">themselves. I&#39;m talkin&#39; &#39;bout generative AI, my friends. It&#39;s the poetry of the</span>
+<span class="gp">... </span><span class="s2">future, and it&#39;s here today. So, sit back, cats and kittens, and let me tell</span>
+<span class="gp">... </span><span class="s2">you how to ride the waves of generative AI to enhance your creative soul.</span>
+<span class="gp">... </span><span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The markdown parser expects a QuickNoteList.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quick_note_list</span> <span class="o">=</span> <span class="n">QuickNoteList</span><span class="o">.</span><span class="n">create</span><span class="p">([</span><span class="n">quick_note</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_str</span> <span class="o">=</span> <span class="n">to_markdown</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">quick_note_list</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">markdown_str</span><span class="p">)</span>
+<span class="go">&lt;!--BEGIN author=&quot;Jack Kerouac&quot; category=&quot;writing&quot; date=&quot;2023-09-21&quot; --&gt;</span>
+<span class="go"># Using generative AI to sharpe creativity</span>
+
+<span class="go">Man, you know, the world&#39;s changing faster than a jazz riff on a summer night.</span>
+<span class="go">We got these machines now, man, machines that can create like the gods</span>
+<span class="go">themselves. I&#39;m talkin&#39; &#39;bout generative AI, my friends. It&#39;s the poetry of the</span>
+<span class="go">future, and it&#39;s here today. So, sit back, cats and kittens, and let me tell</span>
+<span class="go">you how to ride the waves of generative AI to enhance your creative soul.</span>
+
+<span class="go">&lt;!--END--&gt;</span>
+
+
+
+</pre></div>
+</div>
+</section>
+<section id="updating-a-markdown-quick-note">
+<h2>Updating a markdown quick-note<a class="headerlink" href="#updating-a-markdown-quick-note" title="Permalink to this heading"></a></h2>
+<p>We have a markdown quick-note document full of blog post ideas. We would
+like to make a change in one of them and re-render the document.</p>
+<p>This is our markdown quick-note document:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">markdown_quick_note_document</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s2">&lt;!--BEGIN author=&quot;Steve Jobs&quot; category=&quot;technology&quot; date=&quot;2023-08-17&quot; --&gt;</span>
+<span class="gp">... </span><span class="s2"># MiniWatch Review: A Revolution in Wearable Technology</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">Ladies and gentlemen, tech aficionados, and innovators of the digital age,</span>
+<span class="gp">... </span><span class="s2">gather &#39;round as we delve into the future of wearable technology. I&#39;m Steve</span>
+<span class="gp">... </span><span class="s2">Jobs, and today, I have the distinct pleasure of introducing you to a</span>
+<span class="gp">... </span><span class="s2">game-changer in the world of wearables: the MiniWatch.</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">&lt;!--END--&gt;</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">&lt;!--BEGIN author=&quot;Jack Kerouac&quot; category=&quot;writing&quot; date=&quot;2023-09-21&quot; --&gt;</span>
+<span class="gp">... </span><span class="s2"># Using generative AI to sharpe creativity</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">Man, you know, the world&#39;s changing faster than a jazz riff on a summer night.</span>
+<span class="gp">... </span><span class="s2">We got these machines now, man, machines that can create like the gods</span>
+<span class="gp">... </span><span class="s2">themselves. I&#39;m talkin&#39; &#39;bout generative AI, my friends. It&#39;s the poetry of the</span>
+<span class="gp">... </span><span class="s2">future, and it&#39;s here today. So, sit back, cats and kittens, and let me tell</span>
+<span class="gp">... </span><span class="s2">you how to ride the waves of generative AI to enhance your creative soul.</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">&lt;!--END--&gt;</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">&lt;!--BEGIN author=&quot;Elvis Presley&quot; category=&quot;performance&quot; date=&quot;2023-09-01&quot; --&gt;</span>
+<span class="gp">... </span><span class="s2"># Rockin&#39; the Stage: Elvis&#39;s Guide to Performance Techniques</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">Hey there, cats and kittens, gather &#39;round &#39;cause the King is in the building!</span>
+<span class="gp">... </span><span class="s2">Today, I wanna talk to y&#39;all about somethin&#39; that&#39;s near and dear to my heart –</span>
+<span class="gp">... </span><span class="s2">the art of rockin&#39; the stage. You see, darlin&#39;, it ain&#39;t just about singin&#39; a</span>
+<span class="gp">... </span><span class="s2">song; it&#39;s about puttin&#39; on a show that&#39;ll knock their socks off. So, let&#39;s</span>
+<span class="gp">... </span><span class="s2">dive into the world of performance techniques, Elvis style!</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">&lt;!--END--&gt;</span>
+<span class="gp">... </span>
+<span class="gp">... </span><span class="s2">&quot;&quot;&quot;</span>
+
+</pre></div>
+</div>
+<p>We would like to make some changes in Jack Kerouac’s item and render the updated
+document:</p>
+<ul class="simple">
+<li><p>Add the category “language models”.</p></li>
+<li><p>Add the text: “In this post we are going to use the InspiredAuthor model from GGG corp.”</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Import the markdown to toml parser</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">danoan.quick_notes.api</span> <span class="kn">import</span> <span class="n">to_toml</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The parser return a `NonRenderedQuickNote`. You should render it using the </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># `BlogPostSketch` class</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">non_rendered_quick_note</span> <span class="o">=</span> <span class="n">to_toml</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">markdown_quick_note_document</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">post_sketches</span> <span class="o">=</span> <span class="n">non_rendered_quick_note</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">BlogPostSketch</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">post</span> <span class="ow">in</span> <span class="n">post_sketches</span><span class="o">.</span><span class="n">list_of_quick_note</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">author</span> <span class="o">==</span> <span class="s2">&quot;Jack Kerouac&quot;</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">post</span><span class="o">.</span><span class="n">category</span> <span class="o">=</span> <span class="s2">&quot;technology,language models&quot;</span>
+<span class="gp">... </span>        <span class="n">post</span><span class="o">.</span><span class="n">text</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">In this post we are going to use the InspiredAuthor model from GGG corp.&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_markdown_string</span> <span class="o">=</span> <span class="n">to_markdown</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">post_sketches</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">updated_markdown_string</span><span class="p">)</span>
+<span class="go">&lt;!--BEGIN author=&quot;Steve Jobs&quot; category=&quot;technology&quot; date=&quot;2023-08-17&quot; --&gt;</span>
+<span class="go"># MiniWatch Review: A Revolution in Wearable Technology</span>
+<span class="go">Ladies and gentlemen, tech aficionados, and innovators of the digital age,</span>
+<span class="go">gather &#39;round as we delve into the future of wearable technology. I&#39;m Steve</span>
+<span class="go">Jobs, and today, I have the distinct pleasure of introducing you to a</span>
+<span class="go">game-changer in the world of wearables: the MiniWatch.</span>
+<span class="go">&lt;!--END--&gt;</span>
+
+<span class="go">&lt;!--BEGIN author=&quot;Jack Kerouac&quot; category=&quot;technology,language models&quot; date=&quot;2023-09-21&quot; --&gt;</span>
+<span class="go"># Using generative AI to sharpe creativity</span>
+<span class="go">Man, you know, the world&#39;s changing faster than a jazz riff on a summer night.</span>
+<span class="go">We got these machines now, man, machines that can create like the gods</span>
+<span class="go">themselves. I&#39;m talkin&#39; &#39;bout generative AI, my friends. It&#39;s the poetry of the</span>
+<span class="go">future, and it&#39;s here today. So, sit back, cats and kittens, and let me tell</span>
+<span class="go">you how to ride the waves of generative AI to enhance your creative soul.</span>
+
+<span class="go">In this post we are going to use the InspiredAuthor model from GGG corp.</span>
+<span class="go">&lt;!--END--&gt;</span>
+
+<span class="go">&lt;!--BEGIN author=&quot;Elvis Presley&quot; category=&quot;performance&quot; date=&quot;2023-09-01&quot; --&gt;</span>
+<span class="go"># Rockin&#39; the Stage: Elvis&#39;s Guide to Performance Techniques</span>
+<span class="go">Hey there, cats and kittens, gather &#39;round &#39;cause the King is in the building!</span>
+<span class="go">Today, I wanna talk to y&#39;all about somethin&#39; that&#39;s near and dear to my heart –</span>
+<span class="go">the art of rockin&#39; the stage. You see, darlin&#39;, it ain&#39;t just about singin&#39; a</span>
+<span class="go">song; it&#39;s about puttin&#39; on a show that&#39;ll knock their socks off. So, let&#39;s</span>
+<span class="go">dive into the world of performance techniques, Elvis style!</span>
+<span class="go">&lt;!--END--&gt;</span>
+
+
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../getting-started.html" class="btn btn-neutral float-left" title="Getting started with quick-notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="exporting-quick-notes-to-toml.html" class="btn btn-neutral float-right" title="Exporting quick-notes to toml" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023 Daniel Martins Antunes.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

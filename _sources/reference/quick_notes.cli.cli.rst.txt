@@ -1,0 +1,7 @@
+quick\_notes.cli.cli module
+===========================
+
+.. automodule:: quick_notes.cli.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:

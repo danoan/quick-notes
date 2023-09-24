@@ -1,0 +1,7 @@
+quick_notes
+===========
+
+.. toctree::
+   :maxdepth: 4
+
+   quick_notes

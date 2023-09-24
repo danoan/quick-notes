@@ -1,0 +1,13 @@
+quick\_notes.cli namespace
+==========================
+
+.. py:module:: quick_notes.cli
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   quick_notes.cli.cli
+   quick_notes.cli.model

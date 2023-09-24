@@ -1,0 +1,16 @@
+quick\_notes package
+====================
+
+.. automodule:: quick_notes
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   quick_notes.api
+   quick_notes.cli

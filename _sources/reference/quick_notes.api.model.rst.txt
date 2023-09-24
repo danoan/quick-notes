@@ -1,0 +1,7 @@
+quick\_notes.api.model module
+=============================
+
+.. automodule:: quick_notes.api.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
