@@ -1,7 +1,11 @@
-from danoan.quick_notes.control import model
+"""
+Parse markdown string to NotRenderedQuickNoteList.
+"""
+
+from danoan.quick_notes.api import model
 
 from lark import Lark, Transformer
-from typing import Dict
+from typing import Any, Dict, List
 
 
 class _MarkdownQuickNoteToToml(Transformer):
@@ -33,20 +37,21 @@ class _MarkdownQuickNoteToToml(Transformer):
         k, v = items
         return {k: v}
 
-    def entry(self, items) -> model.QuickNote:
+    def entry(self, items) -> Dict[str, Any]:
         d_params = {}
         for d in items:
             d_params.update(d)
 
-        return model.QuickNote(**d_params)
+        return d_params
 
-    def document(self, items) -> model.QuickNoteTable:
-        return model.QuickNoteTable(list(items))
+    def document(self, items) -> List[Dict[str, Any]]:
+        return list(items)
 
 
-def parse(markdown_str: str) -> model.QuickNoteTable:
+def parse(markdown_str: str) -> model.NotRenderedQuickNoteList:
     """
-    Convert a markdown string containing one or more quick note into a QuickNoteTable.
+    Convert a markdown string containing one or more quick note into a non
+    rendered QuickNoteList.
 
     Args:
         markdown_str: A markdown string containing one or more markdown quick-note.
@@ -75,9 +80,21 @@ def parse(markdown_str: str) -> model.QuickNoteTable:
         %import common.WS
         %ignore WS
     """
-
     quick_notes_parser = Lark(
-        quick_notes_grammar, start="document", parser="lalr", transformer=_MarkdownQuickNoteToToml()
+        quick_notes_grammar,
+        start="document",
+        parser="lalr",
+        transformer=_MarkdownQuickNoteToToml(),
     )
 
-    return quick_notes_parser.parse(markdown_str)
+    parsed_document = quick_notes_parser.parse(markdown_str)
+    if not isinstance(parsed_document, list):
+        raise RuntimeError(f"Unexpected parsed data type: {parsed_document}")
+
+    parsed_element = model.NotRenderedQuickNoteList(
+        quick_notes_parser.parse(markdown_str)
+    )
+    if not isinstance(parsed_element, model.NotRenderedQuickNoteList):
+        raise RuntimeError(f"Unexpected parsed data type: {parsed_element}")
+
+    return parsed_element
