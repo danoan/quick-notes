@@ -7,7 +7,7 @@ import argparse
 from datetime import datetime
 import io
 import sys
-from typing import TextIO, Optional
+from typing import TextIO, Optional, Union
 
 
 def generate_markdown_from_stream(toml_stream: TextIO) -> str:
@@ -136,7 +136,7 @@ def _extract_help(docstring: Optional[str]) -> str:
         return docstring
 
 
-def _generate_markdown(toml_filepath: str, **kwargs):
+def _generate_markdown(toml_filepath: Union[str, TextIO], **kwargs):
     """
     Generate markdown quick-notes from toml quick-notes.
 
@@ -144,8 +144,8 @@ def _generate_markdown(toml_filepath: str, **kwargs):
         toml_filepath: Path to the toml file.
     """
     if isinstance(toml_filepath, type(sys.stdin)):
-        sys.stdout.write(generate_markdown_from_stream(toml_filepath))
-    else:
+        sys.stdout.write(generate_markdown_from_stream(toml_filepath))  # type: ignore
+    elif isinstance(toml_filepath, str):
         sys.stdout.write(generate_markdown_from_filepath(toml_filepath))
 
 
@@ -157,8 +157,8 @@ def _generate_toml(markdown_filepath: str, **kwargs):
         markdown_filepath: Path to the markdown file
     """
     if isinstance(markdown_filepath, type(sys.stdin)):
-        generate_toml_from_stream(markdown_filepath).write(sys.stdout)
-    else:
+        generate_toml_from_stream(markdown_filepath).write(sys.stdout)  # type: ignore
+    elif isinstance(markdown_filepath, str):
         generate_toml_from_filepath(markdown_filepath).write(sys.stdout)
 
 
