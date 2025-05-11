@@ -1,12 +1,14 @@
 #! /usr/bin/env bash
 
+set -euo pipefail
+
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_PATH="${SCRIPT_PATH%quick-notes*}quick-notes"
 
 OUTPUT_FOLDER="${SCRIPT_PATH}/output"
 mkdir -p "${OUTPUT_FOLDER}"
 
-pushd "${PROJET_PATH}" >/dev/null
+pushd "${PROJECT_PATH}" >/dev/null
 
 source .venv/bin/activate
 
@@ -18,6 +20,6 @@ mkdir -p "${EXTRACT_FOLDER}"
 
 pyproject-build --outdir "${DIST_FOLDER}" .
 
-tar -xf ${DIST_FOLDER}/quick-notes-*.tar.gz -C "${EXTRACT_FOLDER}"
+tar -xf ${DIST_FOLDER}/quick_notes-*.tar.gz -C "${EXTRACT_FOLDER}"
 
 popd >/dev/null

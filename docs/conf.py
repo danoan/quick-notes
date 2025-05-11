@@ -12,8 +12,13 @@ from importlib import metadata
 import pathlib
 import sys
 
-source_folder = pathlib.Path(__file__).parents[1].joinpath(
-    "src/danoan").resolve().as_posix()
+source_folder = (
+    pathlib.Path(__file__)
+    .parents[1]
+    .joinpath("src/danoan")
+    .resolve()
+    .as_posix()
+)
 sys.path.insert(0, source_folder)
 
 # Tell sphinx the package version
@@ -37,12 +42,12 @@ extensions = [
     "sphinx.ext.napoleon",  # NumPy and Google docstring format
     "sphinx.ext.viewcode",  # Source code link at function, class, module documentation
     "sphinx_rtd_theme",  # Read the docs theme
-    "myst_parser"
+    "myst_parser",
 ]
 
 source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
+    ".rst": "restructuredtext",
+    ".md": "markdown",
 }
 
 autodoc_typehints = "both"

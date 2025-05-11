@@ -5,6 +5,7 @@ QuickNote base classes.
 - QuickNoteBase: Type from which every QuickNote is derived from.
 - QuickNoteList: List of QuickNoteBase.
 """
+
 from danoan.toml_dataclass import TomlDataClassIO, TomlTableDataClassIO
 
 from dataclasses import dataclass, make_dataclass
