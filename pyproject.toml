@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quick-notes"
-version = "1.0"
+version = "1.0.1"
 description = "Markdown dialect with support to metadata and toml serialization"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -20,7 +20,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
-dependencies = ["dataclasses", "jinja2", "typing_extensions", "importlib_resources", "lark", "toml_dataclass @ http://pypi-server.barriguinhas.fr/packages/toml_dataclass-0.1.0-py3-none-any.whl#md5=002285ded5b7e2b5ad1301015f874c70"] 
+dependencies = ["dataclasses", "jinja2", "typing_extensions", "importlib_resources", "lark", "toml_dataclass"] 
 
 [project.urls]
 Documentation = "https://github.com/danoan/quick-notes#readme"
